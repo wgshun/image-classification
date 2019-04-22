@@ -1,4 +1,4 @@
-# image_classification
+# 图像分类
 
 ### Finetune AlexNet with Tensorflow
 原作者：[kratzert](https://github.com/kratzert/finetune_alexnet_with_tensorflow)
@@ -7,7 +7,7 @@
 
 支持 Tensorboard 实时监控训练状态。
 
-训练的数据集时，数据集结构：
+训练时，数据集结构：
 ```
 Example train.txt:
 /path/to/train/image1.png 0
