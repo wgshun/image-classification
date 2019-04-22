@@ -91,7 +91,7 @@ var_list = [v for v in tf.trainable_variables() if v.name.split('/')[0] in train
 
 # Op for calculating the loss
 with tf.name_scope("cross_ent"):
-    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=score,
+    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=score,
                                                                   labels=y))
 
 # Train op
