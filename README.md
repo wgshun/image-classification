@@ -1,7 +1,7 @@
 # 图像分类
 
 ### Finetune AlexNet with Tensorflow
-原作者：[kratzert](https://github.com/kratzert/finetune_alexnet_with_tensorflow)
+### 原作者：[kratzert](https://github.com/kratzert/finetune_alexnet_with_tensorflow)
 
 运行环境：Python 3 & Tensorflow >= 1.4 & Numpy
 
