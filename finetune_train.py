@@ -26,10 +26,10 @@ Configuration Part.
 
 # Path to the textfiles for the trainings and validation set
 train_file = '..\\train_data\\train.txt'
-# val_file = '/path/to/val.txt'
+val_file = '..\\train_data\\train.txt'
 
 # Learning params
-learning_rate = 0.01
+learning_rate = 0.0001
 num_epochs = 10
 batch_size = 6
 
@@ -42,15 +42,17 @@ train_layers = ['fc8', 'fc7', 'fc6']
 display_step = 20
 
 # Path for tf.summary.FileWriter and to store model checkpoints
-filewriter_path = "..\\model\\tensorboard"
-checkpoint_path = "..\\model\\checkpoints"
+filewriter_path = ".\\model\\tensorboard"
+checkpoint_path = ".\\model\\checkpoints"
 
 """
 Main Part of the finetuning Script.
 """
 
 # Create parent path if it doesn't exist
-if not os.path.isdir(checkpoint_path):
+if not os.path.exists(filewriter_path):
+    os.mkdir(filewriter_path)
+if not os.path.exists(checkpoint_path):
     os.mkdir(checkpoint_path)
 
 # Place data loading and preprocessing on the cpu
@@ -60,11 +62,11 @@ with tf.device('/cpu:0'):
                                  batch_size=batch_size,
                                  num_classes=num_classes,
                                  shuffle=True)
-    # val_data = ImageDataGenerator(val_file,
-    #                               mode='inference',
-    #                               batch_size=batch_size,
-    #                               num_classes=num_classes,
-    #                               shuffle=False)
+    val_data = ImageDataGenerator(val_file,
+                                  mode='inference',
+                                  batch_size=batch_size,
+                                  num_classes=num_classes,
+                                  shuffle=False)
 
     # create an reinitializable iterator given the dataset structure
     iterator = Iterator.from_structure(tr_data.data.output_types,
@@ -73,7 +75,7 @@ with tf.device('/cpu:0'):
 
 # Ops for initializing the two different iterators
 training_init_op = iterator.make_initializer(tr_data.data)
-# validation_init_op = iterator.make_initializer(val_data.data)
+validation_init_op = iterator.make_initializer(val_data.data)
 
 # TF placeholder for graph input and output
 x = tf.placeholder(tf.float32, [batch_size, 227, 227, 3])
@@ -135,7 +137,7 @@ saver = tf.train.Saver()
 
 # Get the number of training/validation steps per epoch
 train_batches_per_epoch = int(np.floor(tr_data.data_size/batch_size))
-# val_batches_per_epoch = int(np.floor(val_data.data_size / batch_size))
+val_batches_per_epoch = int(np.floor(val_data.data_size / batch_size))
 
 # Start Tensorflow session
 with tf.Session() as sess:
@@ -180,19 +182,19 @@ with tf.Session() as sess:
                 writer.add_summary(s, epoch*train_batches_per_epoch + step)
 
         # Validate the model on the entire validation set
-        # print("{} Start validation".format(datetime.now()))
-        # sess.run(validation_init_op)
-        # test_acc = 0.
-        # test_count = 0
-        # for _ in range(val_batches_per_epoch):
-        #
-        #     img_batch, label_batch = sess.run(next_batch)
-        #     acc = sess.run(accuracy, feed_dict={x: img_batch,
-        #                                         y: label_batch,
-        #                                         keep_prob: 1.})
-        #     test_acc += acc
-        #     test_count += 1
-        # test_acc /= test_count
+        print("{} Start validation".format(datetime.now()))
+        sess.run(validation_init_op)
+        test_acc = 0.
+        test_count = 0
+        for _ in range(val_batches_per_epoch):
+
+            img_batch, label_batch = sess.run(next_batch)
+            acc = sess.run(accuracy, feed_dict={x: img_batch,
+                                                y: label_batch,
+                                                keep_prob: 1.})
+            test_acc += acc
+            test_count += 1
+        test_acc /= test_count
         print("{} Validation Accuracy = {:.4f}".format(datetime.now(),
                                                        test_acc))
         print("{} Saving checkpoint of model...".format(datetime.now()))

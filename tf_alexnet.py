@@ -42,7 +42,7 @@ class AlexNet(object):
         self.SKIP_LAYER = skip_layer
 
         if weights_path == 'DEFAULT':
-            self.WEIGHTS_PATH = '..\\model\\bvlc_alexnet.npy'
+            self.WEIGHTS_PATH = 'bvlc_alexnet.npy'
         else:
             self.WEIGHTS_PATH = weights_path
 
@@ -113,6 +113,13 @@ class AlexNet(object):
                         else:
                             var = tf.get_variable('weights', trainable=False)
                             session.run(var.assign(data))
+
+    def load_model(self, session):
+
+        # Initialize an saver for store model checkpoints
+        saver = tf.train.Saver()
+
+        saver.restore(session, self.WEIGHTS_PATH)
 
 
 def conv(x, filter_height, filter_width, num_filters, stride_y, stride_x, name,
