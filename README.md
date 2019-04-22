@@ -18,3 +18,6 @@ Example train.txt:
 .
 ```
 可使用 `gen_train&val_txt.py` 生成 train.txt 和 val.txt.
+
+预训练模型下载路径：[bvlc_alexnet.npy](http://www.cs.toronto.edu/~guerzhoy/tf_alexnet/bvlc_alexnet.npy)
+
