@@ -5,7 +5,7 @@ from tf_alexnet import AlexNet
 
 
 # Edit just these
-FILE_PATH = '.\\model\\checkpoint\\model_epoch8.ckpt'
+FILE_PATH = 'C:\\Users\\VCAadmin\\Desktop\\gitpage\\tensorflow\\model\\checkpoints\\model_epoch8.ckpt'
 num_classes = 16
 OUTPUT_FILE = 'alexnet_trained.npy'
 
