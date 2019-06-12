@@ -36,7 +36,7 @@ with tf.device('/cpu:0'):
     keep_prob = tf.placeholder(tf.float32)
 
     # Initialize model
-    model = AlexNet(x, keep_prob, 16, [], weights_path='C:\\Users\\VCAadmin\\Desktop\\gitpage\\tensorflow\\image_classification\\model\\checkpoints\\model_epoch8.ckpt')
+    model = AlexNet(x, keep_prob, 16, [], weights_path='model\\checkpoints\\model_epoch8.ckpt')
 
     # Link variable to model output
     score = model.fc8
